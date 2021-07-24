@@ -15,30 +15,34 @@ let pizzaOptions = {
   ],
   sizes: [
     {
-      name: "Kichik",
-      size: 25,
-      price: 25000
-    },
-    {
-      name: "O'rtacha",
-      size: 30,
-      price: 30000
-    },
-    {
       name: "Katta",
       size: 35,
       price: 45000
     },
     {
+      name: "Kichik",
+      size: 25,
+      price: 25000
+    },
+    {
       name: "Oilaviy",
       size: 40,
       price: 50000
+    },
+    {
+      name: "O'rtacha",
+      size: 30,
+      price: 30000
     }
   ],
   toppings: [
     {
       name: "Pomidor",
       price: 4000
+    },
+    {
+      name: "Birnima",
+      price: 1000
     },
     {
       name: "Tuzlangan bodring",
@@ -69,29 +73,67 @@ let pizzaOptions = {
   ]
 };
 
+var elPizzaSizeRadioTemplate = document.querySelector('.pizza-size-radio-template').content;
 var elPizzaToppingCheckboxTemplate = document.querySelector('.pizza-topping-checkbox-template').content;
 
 var elPizzaForm = document.querySelector('.pizza-form');
+var elPizzaSizes = elPizzaForm.querySelector('.pizza-form__sizes');
 var elPizzaToppings = elPizzaForm.querySelector('.pizza-form__toppings');
+
+
+// input size object {size, name, price}, output - HTML element
+function createSizeRadio (size) {
+  var elSizeRadio = elPizzaSizeRadioTemplate.cloneNode(true);
+  elSizeRadio.querySelector('.radio__input').value = size.size;
+  elSizeRadio.querySelector('.radio__control').textContent = size.name + ' ' + size.size + ' ' + ' cm';
+  return elSizeRadio;
+}
+
+function showPizzaSizeRadios () {
+  var elSizeRadiosFragment = document.createDocumentFragment();
+  pizzaOptions.sizes
+    .slice()
+    .sort(function (a, b) {
+      return a.size - b.size;
+    })
+    .forEach(function (size) {
+      elSizeRadiosFragment.appendChild(createSizeRadio(size))
+    });
+  elPizzaSizes.appendChild(elSizeRadiosFragment);
+}
 
 function createToppingCheckbox (topping) {
   var elToppingCheckbox = elPizzaToppingCheckboxTemplate.cloneNode(true);
   elToppingCheckbox.querySelector('.checkbox__input').name = topping.name;
   elToppingCheckbox.querySelector('.checkbox__control').textContent = topping.name;
-
   return elToppingCheckbox;
 }
 
 
 // Options ichidagi topping qiymatlari checkboxlarini sahifaga joylash
-var elToppingsFragment = document.createDocumentFragment();
-pizzaOptions.toppings.forEach(function (topping) {
-  elToppingsFragment.appendChild(createToppingCheckbox(topping));
-});
-elPizzaToppings.appendChild(elToppingsFragment);
+// method chaining
+function showPizzaToppings () {
+  var elToppingsFragment = document.createDocumentFragment();
+  pizzaOptions.toppings
+    .slice()
+    .sort(function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    })
+    .forEach(function (topping) {
+      elToppingsFragment.appendChild(createToppingCheckbox(topping));
+    });
+  elPizzaToppings.appendChild(elToppingsFragment);
+}
 
 
-
+showPizzaSizeRadios();
+showPizzaToppings();
 
 
 // createToppingCheckbox({})
@@ -103,3 +145,6 @@ elPizzaToppings.appendChild(elToppingsFragment);
 
 // binnarsa.classList - X
 // binnarsa.querySelector('li').classList - V
+
+
+// var names = ['Iqboliddin', 'Shoxruh', 'Abduqodir', 'Farruh', 'Asrorbek', 'Otabek', 'Iqboljon', 'Izzatillo'];
