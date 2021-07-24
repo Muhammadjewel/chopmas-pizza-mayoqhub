@@ -72,6 +72,7 @@ let pizzaOptions = {
     }
   ]
 };
+let order = {};
 
 var elPizzaSizeRadioTemplate = document.querySelector('.pizza-size-radio-template').content;
 var elPizzaToppingCheckboxTemplate = document.querySelector('.pizza-topping-checkbox-template').content;
@@ -136,6 +137,16 @@ showPizzaSizeRadios();
 showPizzaToppings();
 
 
+var elsSizeRadio = document.querySelectorAll('.radio__input');
+if (elsSizeRadio.length > 0) {
+  elsSizeRadio.forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      order.size = pizzaOptions.sizes.find(size => size.size === Number(radio.value));
+    });
+  });
+}
+
+
 // createToppingCheckbox({})
 
 
@@ -148,3 +159,8 @@ showPizzaToppings();
 
 
 // var names = ['Iqboliddin', 'Shoxruh', 'Abduqodir', 'Farruh', 'Asrorbek', 'Otabek', 'Iqboljon', 'Izzatillo'];
+
+
+// findIndex
+// splice
+// reduce
